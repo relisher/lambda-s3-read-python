@@ -24,15 +24,4 @@ def lambda_handler(event, context):
     s3 = boto3.resource('s3')
     response = s3.Bucket("archaeology-lookup").Object("newfile.txt").get()
     responsecontent = response['Body'].read().decode('utf-8')
-
-    operations = {
-        'GET': responsecontent
-    }
-
-
-    operation = event['httpMethod']
-    if operation in operations:
-        payload = event['queryStringParameters'] if operation == 'GET' else json.loads(event['body'])
-        return respond(None, operations[operation])
-    else:
-        return respond(ValueError('Unsupported method "{}"'.format(operation)))
+    return responsecontent
